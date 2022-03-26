@@ -6,26 +6,24 @@ using Domain;
 using Microsoft.EntityFrameworkCore;
 using System;
 
+using Application.Activities;
+
 namespace API.Controllers
 {
     public class ActivitiesController : BaseApiController
     {
-        private readonly DataContext _context;
-        public ActivitiesController(DataContext context)
-        {
-            _context = context;
-        }
 
         [HttpGet]
         public async Task<ActionResult<List<Activity>>> GetActivities()
         {
-            return await   _context.Activities.ToListAsync();
+            return await   Mediator.Send(new List.Query()); // List needs using application activities
         }
 
         [HttpGet("{id}")] // activity id
-        public async Task<ActionResult<Activity>> GetActivity(Guid id)
+        public async Task<ActionResult<Activity>>GetActivity(Guid id)
         {
-            return await _context.Activities.FindAsync(id);
+            return await Mediator.Send(new Details.Query{Id = id});
+            //return Ok();
         }
 
     }

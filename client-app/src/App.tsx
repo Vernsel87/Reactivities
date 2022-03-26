@@ -24,7 +24,6 @@ function App() {
             </List.Item>
           ))}
       </List>
-
     </div>
   );
 }
